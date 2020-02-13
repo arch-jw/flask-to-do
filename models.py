@@ -1,3 +1,5 @@
+import sqlite3
+
 class Schema:
     def __init__(self):
         self.conn = sqlite3.connect('todo.db')
@@ -29,6 +31,41 @@ class Schema:
         );
         """
         self.conn.execute(query)
+
+class ToDoModel:
+    TABLENAME = "TODO"
+
+    def __init__(self):
+        self.conn = sqlite3.connect('todo.db')
+
+    def create(self, text, description):
+        query = f'insert into {TABLENAME} ' \
+                f'(Title, Description) ' \
+                f'values ("{text}","{description}")'
+
+        result = self.conn.execute(query)
+        return result
+
+    def update(self, text, description, id):
+        query = f'update  {TABLENAME} ' \
+                f'set Title = "{text}", Description = "{description}" ' \
+                f'where id = "{id}"'
+
+        result = self.conn.execute(query)
+        return result
+
+    def delete(self, id):
+        query = f'delete from {TABLENAME} ' \
+                f'where id = "{id}"'
+
+        result = self.conn.execute(query)
+        return result
+
+    def list(self):
+        query = f'select * from {TABLENAME}'
+
+        result = self.conn.execute(query)
+        return result
 
 if __name__ == "__main__":
     Schema()
